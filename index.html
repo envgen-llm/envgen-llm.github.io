@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="EnvGen: Generating and Adapting Environments via LLMs for Training Embodied Agents">
+  <meta name="keywords" content="embodied ai, large language model, reinforcement learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EnvGen</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">EnvGen: Generating and Adapting Environments via LLMs <br>for Training Embodied Agents</h1>
+          <div class="is-size-5 publication-authors">
+            
+            <span class="author-block">
+              <a href="https://aszala.com/">Abhay Zala*</a></span>, &nbsp;
+            <span class="author-block">
+              <a href="https://j-min.io">Jaemin Cho*</a></span>, &nbsp;
+            <span class="author-block">
+              <a href="https://hl-hanlin.github.io/">Han Lin</a></span>, &nbsp;
+            <span class="author-block">
+              <a href="https://jaehong31.github.io/">Jaehong Yoon</a></span>, &nbsp;
+            <span class="author-block">
+              <a href="https://www.cs.unc.edu/~mbansal/">Mohit Bansal</a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">University of North Carolina at Chapel Hill</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">*: equal contribution</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2403.12014"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/aszala/envgen"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <center>
+        <img src="./static/images/teaser2.png" alt="Teaser" width="100%">
+      </center>
+      
+      <div class="content has-text-justified">
+        Comparison of different methods for creating embodied agents. Previous works commonly use <strong>(a) small RL
+        agents</strong> or <strong>(b) LLM agents</strong> to explore skills. In <strong>(c) EnvGen</strong>, we train a small RL agent with diverse
+        LLM-generated environments that train different skills in parallel and can be adapted via feedback to help the agents progressively improve skills that they
+        are weaker at. Our method benefits from using the world knowledge from LLMs while maintaining efficient training
+        through a lightweight RL agent.
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+          Recent state-of-the-art approaches for embodied learning via interaction directly employ large language models (LLMs) as
+          agents to determine the next steps in an environment. Due to their world knowledge and reasoning capabilities, LLM
+          agents achieve stronger performance than previous smaller agents based on reinforcement learning (RL); however,
+          frequently calling LLMs is slow and expensive. This begs an interesting question: <i>Instead of directly employing LLMs as
+          embodied agents, can we use LLMs’ reasoning capabilities to adaptively create training environments to help smaller
+          embodied RL agents learn useful skills that they are weak at?</i>
+          </p>
+          <p>
+          In this work, we propose <b>EnvGen</b>, a novel framework to
+          address this question. First, we prompt an LLM to generate training environments that allow agents to quickly learn
+          different tasks in parallel. Concretely, the LLM is given the task description and environment simulator objectives that
+          the agents should learn and is then asked to generate a set of environment configurations (e.g., different terrains,
+          items initially given to agents, chance of finding certain objects, etc.). Next, we train a small RL agent in a mixture
+          of the original and LLM-generated environments. Then, we enable the LLM to continuously adapt the generated environments
+          to progressively improve the skills that the agent is weak at, by providing feedback to the LLM in the form of the
+          agent’s performance.
+          </p>
+          <p>
+          We demonstrate the usefulness of EnvGen with comprehensive experiments in Crafter and Heist game
+          environments. We find that a small RL agent trained with EnvGen can outperform SOTA methods, including a GPT-4 agent,
+          and learns longhorizon tasks significantly faster. We also show qualitatively how the LLM adapts training environments
+          to help improve RL agents’ weaker skills over time. Additionally, EnvGen is substantially more efficient as it only uses
+          a small number of LLM calls (e.g., 4 in total), whereas LLM agents require one or more LLM calls per step (resulting in
+          thousands of LLM calls per episode). Lastly, we present detailed ablation studies for EnvGen’s design choices.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        
+        <img src="./static/images/method2.png" alt="method" width="80%">
+
+        <div class="content has-text-justified">
+        
+          <div class="content has-text-justified">
+            In <b>EnvGen</b>, we generate multiple environments with an LLM to let the agent learn different skills effectively,
+            with the N<sup>Cycle</sup> training cycles, each consisting of the following four steps.
+
+            <br><br>
+            
+            <table>
+              <tr>
+                <td style="min-width: 80px; padding-left: 0;"><strong style="color: rgb(102, 194, 102);">Step 1:</strong></td>
+                <td>We provide an LLM with a prompt composed of four components (i.e., task description, environment details, output template, and feedback from the previous cycle), and ask the LLM to fill the template and output various environment configurations that can be used to train agents on different skills.</td>
+              </tr>
+              <tr>
+                <td style="min-width: 80px; padding-left: 0;"><strong style="color: #5499C7;">Step 2:</strong></td>
+                <td>We train the RL agent in multiple LLM-generated environments (i.e., LLM environments), so that it can learn different
+                useful skills in parallel.</td>
+              </tr>
+              <tr>
+                <td style="min-width: 80px; padding-left: 0;"><strong style="color: #E67E22;">Step 3:</strong></td>
+                <td>We first train the RL agent in the original environment to mitigate overfitting to the LLM environments. Then we measure
+                the current RL agent’s performance in different tasks in the original environment to check which skills/tasks the agent
+                is still weak at.</td>
+              </tr>
+              <tr>
+                <td style="min-width: 80px; padding-left: 0;"><strong style="color: purple;">Step 4:</strong></td>
+                <td>We provide the LLM with the agent performance from the original environment (measured in step 3) as feedback for adapting the LLM environments in the next cycle to focus on the weaker performing skills.</td>
+              </tr>
+            </table>
+          </div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Experiments</h2>
+
+        <div class="content has-text-justified">
+        Below, we demonstrate the usefulness of the EnvGen method with comprehensive experiments and analysis.
+        Please check the paper to see additional analysis and ablation studies on EnvGen design choices.
+        </div>
+
+        <br>
+
+        <h3 class="title is-4">Comparison with State-of-the-Art Methods on Crafter Environment</h3>
+
+        <img src="./static/images/table1.png" alt="table1" width="80%">
+
+        <div class="content has-text-justified">
+          Comparison of different agents in the <a href="https://arxiv.org/abs/2109.06780">Crafter (Hafner, 2022)</a>  environment.
+          Following previous works, we report the
+          geometric mean of success rates across its 22 achievements and rewards for 1M Crafter steps. We experiment with EnvGen
+          on two models, PPO and Achievement Distillation. *: scores from the <a href="https://github.com/danijar/crafter">Crafter Scoreboard</a> and <a href="https://arxiv.org/abs/2307.03486">Moon et al. (2023)</a>. †: average number of LLM calls to run a single episode, according to <a href="https://arxiv.org/abs/2305.15486">SPRING (Wu et al., 2023)</a>. PT: Pretraining;
+          AD: Achievement Distillation; ±: one standard deviation.
+        </div>
+
+        
+
+        <br><br><br>
+
+        <h3 class="title is-4">Detailed Achievement Analysis on Crafter Environment</h3>
+
+
+        
+
+        <img src="./static/images/ppo_0.8M_comparison.png" alt="ppo_0.8" width="80%">
+
+        <div class="content has-text-justified">
+          Success rates for all the Crafter achievements of two PPO agents – <strong style="color: #5499C7;">(1) Baseline:</strong> trained in
+          Crafter for 1.96M steps, and
+          <strong style="color: #E67E22;">(2) Ours</strong>: trained for 0.96M steps in Crafter<sup>EnvGen</sup> and for 1M steps
+          in Crafter.
+          Notably, training in
+          Crafter<sup>EnvGen</sup> significantly improves the scores of long-horizon achievements (with many prerequisites) such
+          as <em>'make stone pickaxe'</em>, <em>'make iron pickaxe'</em>, and <em>'make iron sword'</em>.
+        </div>
+
+        <br><br><br>
+
+
+
+        <img src="./static/images/unlocked_achievement_plots.png" alt="unlocked_achievement_plots" width="80%">        
+
+        <div class="content has-text-justified">
+          Unlock times (the first moment when the agent completed an achievement) for three long-horizon achievements (<em>'make stone pickaxe'</em>, <em>'make iron pickaxe'</em>, and <em>'make iron sword'</em>) of two PPO agents –
+          <strong style="color: #5499C7;">(1) Baseline:</strong> trained in
+          Crafter for 1.96M steps, and
+          <strong style="color: #E67E22;">(2) Ours</strong>: trained for 0.96M steps in Crafter<sup>EnvGen</sup>and for 1M steps in Crafter.
+          The plot
+          shows the last 1M training steps out of 1.96M steps. Our agent that was trained in Crafter<sup>EnvGen</sup> environments unlocks
+          the achievements much quicker than the baseline agent that was only trained in the Crafter environment.
+        </div>
+
+        <br><br><br>
+
+        <h3 class="title is-4">Adaptation of Training Environments Helps the Agent Improve Weaker Skills</h3>
+
+        <img src="./static/images/cycle_progress.png" alt="cycle_progress" width="80%">
+
+        <div class="content has-text-justified">
+
+          Adaptation of training environments based on agent performance over EnvGen cycles. At the end of each cycle, the RL
+          agent's performance is given to the LLM as feedback (e.g., <em>'Collect coal is 2%'</em>).
+          The LLM uses the feedback to
+          adaptively generate new environments that can help the agent progressively tackle skills it was previously weak at.
+          As
+          the training proceeds, <strong style="color: #E67E22;">our RL agent</strong> trained with EnvGen shows more rapid improvements than the <strong style="color: #5499C7;">baseline agent</strong> trained
+          only in Crafter, by adaptively focusing the learning on previously weaker skills (i.e., <em>'collect coal'</em> and <em>'make stone
+          pickaxe'</em>).
+
+        </div>
+
+        <br><br><br>
+
+        <h3 class="title is-4">Evaluation on Heist Environment</h3>
+        
+        <img src="./static/images/table2.png" alt="table2" width="80%">
+        
+        <div class="content has-text-justified">
+
+          We also evaluate the effectiveness of EnvGen framework with another game environment – <a href="https://github.com/openai/procgen/blob/master/procgen/src/games/heist.cpp">Heist</a>, a maze navigation game.
+          Training an agent with Heist<sup>EnvGen</sup> environments is effective in improving performance
+          by increasing average scores (25.9% → 37.7%) and rewards (4.1% → 5.5%), while also stabilizing training by reducing the
+          score variance (i.e., standard deviation goes down 13.2% → 7.5%).
+        
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{Zala2024EnvGen,
+  author = {Abhay Zala* and Jaemin Cho* and Han Lin and Jaehong Yoon and Mohit Bansal},
+  title  = {EnvGen: Generating and Adapting Environments via LLMs for Training Embodied Agents},
+  year   = {2024},
+  url    = {https://envgen-llm.github.io/},
+  journal = {arXiv preprint arXiv:2403.12014}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          The webpage was adapted from <a href="https://github.com/nerfies/nerfies.github.io">nerfies</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
