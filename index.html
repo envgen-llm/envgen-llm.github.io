@@ -70,6 +70,10 @@
           <div class="is-size-5 publication-authors">
             <span class="author-block">*: equal contribution</span>
           </div>
+          <br>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block" style="font-weight: bold; font-size: 1.3em;">COLM 2024</span>
+          </div>
 
           <div class="column has-text-centered">
             <div class="publication-links">
@@ -146,15 +150,18 @@
           items initially given to agents, chance of finding certain objects, etc.). Next, we train a small RL agent in a mixture
           of the original and LLM-generated environments. Then, we enable the LLM to continuously adapt the generated environments
           to progressively improve the skills that the agent is weak at, by providing feedback to the LLM in the form of the
-          agent’s performance.
+          agent's performance.
           </p>
           <p>
           We demonstrate the usefulness of EnvGen with comprehensive experiments in Crafter and Heist game
           environments. We find that a small RL agent trained with EnvGen can outperform SOTA methods, including a GPT-4 agent,
           and learns longhorizon tasks significantly faster. We also show qualitatively how the LLM adapts training environments
-          to help improve RL agents’ weaker skills over time. Additionally, EnvGen is substantially more efficient as it only uses
+          to help improve RL agents' weaker skills over time.
+          We also show that using an LLM to adapt environments dynamically outperforms curriculum learning approaches and
+          how the LLM adapts training environments to help improve RL agents' weaker skills over time.
+          Additionally, EnvGen is substantially more efficient as it only uses
           a small number of LLM calls (e.g., 4 in total), whereas LLM agents require one or more LLM calls per step (resulting in
-          thousands of LLM calls per episode). Lastly, we present detailed ablation studies for EnvGen’s design choices.
+          thousands of LLM calls per episode). Lastly, we present detailed ablation studies for EnvGen's design choices.
           </p>
         </div>
       </div>
@@ -316,11 +323,10 @@
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <pre><code>@article{Zala2024EnvGen,
-  author = {Abhay Zala* and Jaemin Cho* and Han Lin and Jaehong Yoon and Mohit Bansal},
-  title  = {EnvGen: Generating and Adapting Environments via LLMs for Training Embodied Agents},
-  year   = {2024},
-  url    = {https://envgen-llm.github.io/},
-  journal = {arXiv preprint arXiv:2403.12014}
+      author    = {Abhay Zala* and Jaemin Cho* and Han Lin and Jaehong Yoon and Mohit Bansal},
+      title     = {EnvGen: Generating and Adapting Environments via LLMs for Training Embodied Agents},
+      year      = {2024},
+      booktitle = {COLM},
 }</code></pre>
   </div>
 </section>
