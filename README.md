@@ -5,12 +5,12 @@ This is the repository that contains source code for the [EnvGen website](https:
 If you find our project useful in your research, please cite the following paper:
 
 ```bibtex
-@article{Zala2024EnvGen,
+@inproceedings{Zala2024EnvGen,
     author    = {Abhay Zala∗ and Jaemin Cho∗ and Han Lin and Jaehong Yoon and Mohit Bansal},
     title     = {EnvGen: Generating and Adapting Environments via LLMs for Training Embodied Agents},
+    booktitle = {COLM},
     year      = {2024},
     url       = {https://envgen-llm.github.io/},
-    journal   = {arXiv preprint arXiv:2403.12014}
 }
 ```
 
